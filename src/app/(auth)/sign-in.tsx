@@ -80,6 +80,13 @@ export default function SignIn() {
         return;
       }
 
+      if (signIn.status !== "complete") {
+        setFieldErrors({
+          form: "Additional verification is required to finish signing in.",
+        });
+        return;
+      }
+
       const finalizeResult = await signIn.finalize();
       if (finalizeResult?.error) {
         const mapped = mapSingleErrorToFields(finalizeResult.error);

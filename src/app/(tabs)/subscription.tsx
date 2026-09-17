@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 import SubsCard from "../../../components/SubsCard";
-import { HOME_SUBSCRIPTIONS } from "../../../constants/data";
+import { useSubscriptions } from "../../../lib/subscriptions";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
@@ -21,19 +21,20 @@ const Subscription = () => {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(ALL);
   const [expandedSubsId, setExpandedSubsId] = useState<string | null>(null);
+  const allSubscriptions = useSubscriptions();
 
   const categories = useMemo(() => {
     const unique = new Set<string>();
-    for (const sub of HOME_SUBSCRIPTIONS) {
+    for (const sub of allSubscriptions) {
       const category = sub.category?.trim();
       if (category) unique.add(category);
     }
     return [ALL, ...unique];
-  }, []);
+  }, [allSubscriptions]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return HOME_SUBSCRIPTIONS.filter((sub) => {
+    return allSubscriptions.filter((sub) => {
       const matchesCategory =
         selectedCategory === ALL || sub.category?.trim() === selectedCategory;
       if (!matchesCategory) return false;
@@ -44,7 +45,7 @@ const Subscription = () => {
         sub.plan?.toLowerCase().includes(q)
       );
     });
-  }, [query, selectedCategory]);
+  }, [query, selectedCategory, allSubscriptions]);
 
   return (
     <SafeAreaView className="flex-1 bg-background p-5">

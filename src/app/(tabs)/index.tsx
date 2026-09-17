@@ -10,20 +10,19 @@ import SubsCard from "../../../components/SubsCard";
 import UpcommingSubsCard from "../../../components/UpcommingSubsCard";
 import {
   HOME_BALANCE,
-  HOME_SUBSCRIPTIONS,
   HOME_USER,
   UPCOMING_SUBSCRIPTIONS,
 } from "../../../constants/data";
 import { icons } from "../../../constants/icons";
 import images from "../../../constants/images";
+import { addSubscription, useSubscriptions } from "../../../lib/subscriptions";
 import { formatCurrency } from "../../../lib/utils";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
 export default function Index() {
   const [expandedSubsId, setExpandedSubsId] = useState<string | null>(null);
-  const [subscriptions, setSubscriptions] =
-    useState<Subscription[]>(HOME_SUBSCRIPTIONS);
+  const subscriptions = useSubscriptions();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const { user } = useUser();
   const displayName =
@@ -32,7 +31,7 @@ export default function Index() {
     HOME_USER.name;
 
   const handleCreateSubscription = (subscription: Subscription) => {
-    setSubscriptions((previous) => [subscription, ...previous]);
+    addSubscription(subscription);
     setExpandedSubsId(null);
   };
   return (
