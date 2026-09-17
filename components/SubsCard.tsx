@@ -50,7 +50,7 @@ const SubsCard = ({
       </View>
 
       {expanded && (
-        <View className="sub-bdy">
+        <View className="sub-body">
           <View className="sub-details">
             <View className="sub-row">
               <View className="sub-row-copy">
@@ -90,7 +90,7 @@ const SubsCard = ({
 
             <View className="sub-row">
               <View className="sub-row-copy">
-                <Text className="sub-label">Renewal Date:</Text>
+                <Text className="sub-label">Status:</Text>
                 <Text className="sub-value" numberOfLines={1}>
                   {status ? formatStatusLabel(status) : ""}
                 </Text>

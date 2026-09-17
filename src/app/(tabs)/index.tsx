@@ -2,8 +2,9 @@ import { useUser } from "@clerk/expo";
 import dayjs from "dayjs";
 import { styled } from "nativewind";
 import { useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
+import CreateSubscriptionModal from "../../../components/CreateSubscriptionModal";
 import ListHeading from "../../../components/ListHeading";
 import SubsCard from "../../../components/SubsCard";
 import UpcommingSubsCard from "../../../components/UpcommingSubsCard";
@@ -21,11 +22,19 @@ const SafeAreaView = styled(RNSafeAreaView);
 
 export default function Index() {
   const [expandedSubsId, setExpandedSubsId] = useState<string | null>(null);
+  const [subscriptions, setSubscriptions] =
+    useState<Subscription[]>(HOME_SUBSCRIPTIONS);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const { user } = useUser();
   const displayName =
     user?.fullName?.trim() ||
     user?.primaryEmailAddress?.emailAddress ||
     HOME_USER.name;
+
+  const handleCreateSubscription = (subscription: Subscription) => {
+    setSubscriptions((previous) => [subscription, ...previous]);
+    setExpandedSubsId(null);
+  };
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
       <FlatList
@@ -40,7 +49,13 @@ export default function Index() {
                 <Text className="home-user-name">{displayName}</Text>
               </View>
 
-              <Image source={icons.add} className="home-add-icon" />
+              <Pressable
+                onPress={() => setIsCreateOpen(true)}
+                accessibilityRole="button"
+                accessibilityLabel="Create subscription"
+              >
+                <Image source={icons.add} className="home-add-icon" />
+              </Pressable>
             </View>
 
             <View className="home-balance-card">
@@ -72,7 +87,7 @@ export default function Index() {
             <ListHeading title="All Subs" />
           </>
         )}
-        data={HOME_SUBSCRIPTIONS}
+        data={subscriptions}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <SubsCard
@@ -90,6 +105,11 @@ export default function Index() {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={<Text className="home-empty-state">no data</Text>}
         contentContainerClassName="pb-20"
+      />
+      <CreateSubscriptionModal
+        visible={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        onCreate={handleCreateSubscription}
       />
     </SafeAreaView>
   );
