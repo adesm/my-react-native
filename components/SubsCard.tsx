@@ -56,7 +56,7 @@ const SubsCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Payment:</Text>
                 <Text className="sub-value" numberOfLines={1}>
-                  {paymentMethod?.trim()}
+                  {paymentMethod?.trim() || "Not provided"}
                 </Text>
               </View>
             </View>
@@ -65,7 +65,7 @@ const SubsCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Category:</Text>
                 <Text className="sub-value" numberOfLines={1}>
-                  {category?.trim() || plan?.trim()}
+                  {category?.trim() || plan?.trim() || "Not provided"}
                 </Text>
               </View>
             </View>
@@ -74,7 +74,7 @@ const SubsCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Started:</Text>
                 <Text className="sub-value" numberOfLines={1}>
-                  {startDate ? formatSubscriptionDateTime(startDate) : ""}
+                  {formatSubscriptionDateTime(startDate)}
                 </Text>
               </View>
             </View>
@@ -83,7 +83,7 @@ const SubsCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Renewal Date:</Text>
                 <Text className="sub-value" numberOfLines={1}>
-                  {renewalDate ? formatSubscriptionDateTime(renewalDate) : ""}
+                  {formatSubscriptionDateTime(renewalDate)}
                 </Text>
               </View>
             </View>
@@ -92,7 +92,7 @@ const SubsCard = ({
               <View className="sub-row-copy">
                 <Text className="sub-label">Status:</Text>
                 <Text className="sub-value" numberOfLines={1}>
-                  {status ? formatStatusLabel(status) : ""}
+                  {formatStatusLabel(status)}
                 </Text>
               </View>
             </View>

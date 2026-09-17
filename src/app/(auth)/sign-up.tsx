@@ -200,7 +200,7 @@ export default function SignUp() {
                       className={clsx("auth-input", fieldErrors.code && "auth-input-error")}
                       value={code}
                       onChangeText={(v) => {
-                        setCode(v.replace(/[^0-9]/g, "").slice(0, 8));
+                        setCode(v.replace(/[^0-9]/g, "").slice(0, 6));
                         if (fieldErrors.code) {
                           setFieldErrors((p) => ({ ...p, code: undefined }));
                         }
@@ -209,7 +209,7 @@ export default function SignUp() {
                       keyboardType="numeric"
                       autoComplete="one-time-code"
                       textContentType="oneTimeCode"
-                      maxLength={8}
+                      maxLength={6}
                       returnKeyType="done"
                       onSubmitEditing={handleVerify}
                       editable={!isSubmitting}

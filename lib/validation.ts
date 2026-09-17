@@ -17,7 +17,7 @@ export const codeSchema = z
   .string()
   .trim()
   .min(1, "Verification code is required")
-  .regex(/^[0-9]{4,8}$/, "Enter the 6-digit code we sent you");
+  .regex(/^[0-9]{6}$/, "Enter the 6-digit code we sent you");
 
 export const signInSchema = z.object({
   emailAddress: emailSchema,

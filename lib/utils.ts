@@ -22,6 +22,7 @@ export const formatSubscriptionDateTime = (value?: string): string => {
 };
 
 export const formatStatusLabel = (value?: string): string => {
-  if (!value) return "Unknown";
-  return value.charAt(0).toUpperCase() + value.slice(1);
+  const normalized = value?.trim();
+  if (!normalized) return "Not provided";
+  return normalized.charAt(0).toUpperCase() + normalized.slice(1);
 };

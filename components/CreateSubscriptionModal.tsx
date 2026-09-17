@@ -64,6 +64,12 @@ function slugify(value: string): string {
   return slug || "subscription";
 }
 
+function parsePrice(value: string): number {
+  const normalized = value.trim().replace(",", ".");
+  if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(normalized)) return Number.NaN;
+  return Number(normalized);
+}
+
 const CreateSubscriptionModal = ({
   visible,
   onClose,
@@ -76,10 +82,10 @@ const CreateSubscriptionModal = ({
   const [nameError, setNameError] = useState<string | undefined>();
   const [priceError, setPriceError] = useState<string | undefined>();
 
-  const priceValue = Number.parseFloat(price.replace(",", "."));
+  const priceValue = parsePrice(price);
   const isValid =
     name.trim().length > 0 &&
-    !Number.isNaN(priceValue) &&
+    Number.isFinite(priceValue) &&
     priceValue > 0;
 
   const resetForm = () => {
@@ -97,7 +103,7 @@ const CreateSubscriptionModal = ({
 
   const handleSubmit = () => {
     const trimmedName = name.trim();
-    const parsedPrice = Number.parseFloat(price.replace(",", "."));
+    const parsedPrice = parsePrice(price);
 
     let valid = true;
     if (!trimmedName) {
@@ -107,7 +113,7 @@ const CreateSubscriptionModal = ({
       setNameError(undefined);
     }
 
-    if (Number.isNaN(parsedPrice) || parsedPrice <= 0) {
+    if (!Number.isFinite(parsedPrice) || parsedPrice <= 0) {
       setPriceError("Enter a positive amount");
       valid = false;
     } else {

@@ -1,5 +1,6 @@
 import { useUser } from "@clerk/expo";
 import dayjs from "dayjs";
+import { useRouter } from "expo-router";
 import { styled } from "nativewind";
 import { useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
@@ -21,6 +22,7 @@ import { formatCurrency } from "../../../lib/utils";
 const SafeAreaView = styled(RNSafeAreaView);
 
 export default function Index() {
+  const router = useRouter();
   const [expandedSubsId, setExpandedSubsId] = useState<string | null>(null);
   const subscriptions = useSubscriptions();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -34,6 +36,11 @@ export default function Index() {
     addSubscription(subscription);
     setExpandedSubsId(null);
   };
+
+  const handleViewAll = () => {
+    router.push("/(tabs)/subscription" as never);
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
       <FlatList
@@ -70,7 +77,7 @@ export default function Index() {
             </View>
 
             <View className="mb-5">
-              <ListHeading title="Upcoming" />
+              <ListHeading title="Upcoming" onPress={handleViewAll} />
               <FlatList
                 data={UPCOMING_SUBSCRIPTIONS}
                 renderItem={({ item }) => <UpcommingSubsCard {...item} />}
@@ -83,7 +90,7 @@ export default function Index() {
               />
             </View>
 
-            <ListHeading title="All Subs" />
+            <ListHeading title="All Subs" onPress={handleViewAll} />
           </>
         )}
         data={subscriptions}
